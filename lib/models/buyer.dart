@@ -15,11 +15,11 @@ class Buyer {
 
   factory Buyer.fromJson(Map<String, dynamic> json) {
     return Buyer(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      email: json['email'] as String,
-      phone: json['phone'] as String?,
-      avatar: json['avatar'] as String?,
+      id: int.tryParse(json['id']?.toString() ?? '0') ?? 0,
+      name: json['name']?.toString() ?? '',
+      email: json['email']?.toString() ?? '',
+      phone: json['phone']?.toString(),
+      avatar: json['avatar']?.toString(),
     );
   }
 

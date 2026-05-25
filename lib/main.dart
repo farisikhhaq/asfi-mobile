@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/cart_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/main_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,7 +48,7 @@ class AsfiApp extends StatelessWidget {
             margin: EdgeInsets.zero,
           ),
         ),
-        home: const HomeScreen(),
+        home: const MainScreen(),
       ),
     );
   }

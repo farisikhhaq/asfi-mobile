@@ -19,13 +19,13 @@ class OrderItem {
 
   factory OrderItem.fromJson(Map<String, dynamic> json) {
     return OrderItem(
-      id: json['id'] as int,
-      productId: json['product_id'] as int,
-      productName: json['product_name'] as String? ?? 'Produk',
-      variant: json['variant'] as String?,
-      price: (json['price'] as num).toInt(),
-      qty: (json['qty'] as num).toInt(),
-      subtotal: (json['subtotal'] as num).toInt(),
+      id: int.tryParse(json['id']?.toString() ?? '0') ?? 0,
+      productId: int.tryParse(json['product_id']?.toString() ?? '0') ?? 0,
+      productName: json['product_name']?.toString() ?? 'Produk',
+      variant: json['variant']?.toString(),
+      price: int.tryParse(json['price']?.toString() ?? '0') ?? 0,
+      qty: int.tryParse(json['qty']?.toString() ?? '0') ?? 0,
+      subtotal: int.tryParse(json['subtotal']?.toString() ?? '0') ?? 0,
     );
   }
 }
@@ -81,6 +81,14 @@ class Order {
     this.shippedAt,
   });
 
+  static int _parseInt(dynamic value, [int defaultValue = 0]) {
+    if (value == null) return defaultValue;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is String) return int.tryParse(value) ?? defaultValue;
+    return defaultValue;
+  }
+
   factory Order.fromJson(Map<String, dynamic> json) {
     var list = json['items'] as List?;
     List<OrderItem> parsedItems = list != null
@@ -88,29 +96,29 @@ class Order {
         : [];
 
     return Order(
-      id: json['id'] as int,
-      orderNumber: json['order_number'] as String,
-      storeId: (json['store_id'] as num? ?? 0).toInt(),
-      storeName: json['store_name'] as String? ?? 'Toko ASFI',
-      customerName: json['customer_name'] as String,
-      customerEmail: json['customer_email'] as String?,
-      customerPhone: json['customer_phone'] as String? ?? '',
-      shippingAddress: json['shipping_address'] as String? ?? '',
-      shippingCity: json['shipping_city'] as String? ?? '',
-      shippingProvince: json['shipping_province'] as String? ?? '',
-      courier: json['courier'] as String? ?? '',
-      paymentMethod: json['payment_method'] as String? ?? '',
-      paymentStatus: json['payment_status'] as String? ?? 'pending',
-      subtotal: (json['subtotal'] as num? ?? 0).toInt(),
-      shippingCost: (json['shipping_cost'] as num? ?? 0).toInt(),
-      discount: (json['discount'] as num? ?? 0).toInt(),
-      total: (json['total'] as num? ?? 0).toInt(),
-      status: json['status'] as String? ?? 'pending',
-      createdAt: json['created_at'] as String? ?? '',
+      id: _parseInt(json['id']),
+      orderNumber: json['order_number']?.toString() ?? '',
+      storeId: _parseInt(json['store_id']),
+      storeName: json['store_name']?.toString() ?? 'Toko ASFI',
+      customerName: json['customer_name']?.toString() ?? '',
+      customerEmail: json['customer_email']?.toString(),
+      customerPhone: json['customer_phone']?.toString() ?? '',
+      shippingAddress: json['shipping_address']?.toString() ?? '',
+      shippingCity: json['shipping_city']?.toString() ?? '',
+      shippingProvince: json['shipping_province']?.toString() ?? '',
+      courier: json['courier']?.toString() ?? '',
+      paymentMethod: json['payment_method']?.toString() ?? '',
+      paymentStatus: json['payment_status']?.toString() ?? 'pending',
+      subtotal: _parseInt(json['subtotal']),
+      shippingCost: _parseInt(json['shipping_cost']),
+      discount: _parseInt(json['discount']),
+      total: _parseInt(json['total']),
+      status: json['status']?.toString() ?? 'pending',
+      createdAt: json['created_at']?.toString() ?? '',
       items: parsedItems,
-      trackingNumber: json['tracking_number'] as String?,
-      courierShipped: json['courier_shipped'] as String?,
-      shippedAt: json['shipped_at'] as String?,
+      trackingNumber: json['tracking_number']?.toString(),
+      courierShipped: json['courier_shipped']?.toString(),
+      shippedAt: json['shipped_at']?.toString(),
     );
   }
 }

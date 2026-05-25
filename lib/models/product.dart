@@ -43,6 +43,22 @@ class Product {
     this.city,
   });
 
+  static int _parseInt(dynamic value, [int defaultValue = 0]) {
+    if (value == null) return defaultValue;
+    if (value is int) return value;
+    if (value is double) return value.toInt();
+    if (value is String) return int.tryParse(value) ?? defaultValue;
+    return defaultValue;
+  }
+
+  static double _parseDouble(dynamic value, [double defaultValue = 0.0]) {
+    if (value == null) return defaultValue;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? defaultValue;
+    return defaultValue;
+  }
+
   factory Product.fromJson(Map<String, dynamic> json) {
     var imgsList = json['images'];
     List<String> parsedImages = [];
@@ -63,26 +79,26 @@ class Product {
     }
 
     return Product(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      slug: json['slug'] as String,
-      description: json['description'] as String?,
-      price: (json['price'] as num).toInt(),
-      originalPrice: json['original_price'] != null ? (json['original_price'] as num).toInt() : null,
-      stock: (json['stock'] as num).toInt(),
-      category: json['category'] as String? ?? 'Umum',
+      id: _parseInt(json['id']),
+      name: json['name']?.toString() ?? '',
+      slug: json['slug']?.toString() ?? '',
+      description: json['description']?.toString(),
+      price: _parseInt(json['price']),
+      originalPrice: json['original_price'] != null ? _parseInt(json['original_price']) : null,
+      stock: _parseInt(json['stock']),
+      category: json['category']?.toString() ?? 'Umum',
       images: parsedImages,
       variants: parsedVariants,
       specs: (json['specs'] as Map<String, dynamic>?) ?? {},
       tags: parsedTags,
-      weight: (json['weight'] as num? ?? 0).toInt(),
-      totalSold: (json['total_sold'] as num? ?? 0).toInt(),
-      rating: (json['rating'] as num? ?? 5.0).toDouble(),
-      reviewCount: (json['review_count'] as num? ?? 0).toInt(),
-      storeId: (json['store_id'] as num? ?? 0).toInt(),
-      storeName: json['store_name'] as String? ?? 'Toko ASFI',
-      storeSlug: json['store_slug'] as String? ?? '',
-      city: json['city'] as String?,
+      weight: _parseInt(json['weight'], 0),
+      totalSold: _parseInt(json['total_sold'], 0),
+      rating: _parseDouble(json['rating'], 5.0),
+      reviewCount: _parseInt(json['review_count'], 0),
+      storeId: _parseInt(json['store_id'], 0),
+      storeName: json['store_name']?.toString() ?? 'Toko ASFI',
+      storeSlug: json['store_slug']?.toString() ?? '',
+      city: json['city']?.toString(),
     );
   }
 

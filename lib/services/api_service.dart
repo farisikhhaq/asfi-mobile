@@ -1,14 +1,18 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/product.dart';
 import '../models/buyer.dart';
 import '../models/order.dart';
 
 class ApiService {
-  // For android emulator, localhost is 10.0.2.2. For general physical devices, use your computer IP.
-  // Port 8080 is defined in docker-compose.yml as the nginx entry for php-web (asfi-web).
-  static String baseUrl = 'http://10.0.2.2:8080/api/v1';
+  // ─── PENGATURAN ALAMAT API (OTOMATIS) ───
+  // Jika di-build untuk Play Store (Release), otomatis pakai asfi.com.
+  // Jika dijalankan saat coding (Debug), otomatis pakai IP Lokal.
+  static String baseUrl = kReleaseMode 
+      ? 'https://api.asfi.com/v1' 
+      : 'http://192.168.18.119:8080/api/v1';
 
   static Future<void> setBaseUrl(String url) async {
     baseUrl = url;

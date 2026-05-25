@@ -74,94 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: const Color(0xFF0D0D1A),
-      drawer: Drawer(
-        backgroundColor: const Color(0xFF13132B),
-        child: Column(
-          children: [
-            // Drawer Header
-            UserAccountsDrawerHeader(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF6C63FF), Color(0xFFFF6584)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Text(
-                  isAuth ? auth.user!.name[0].toUpperCase() : '?',
-                  style: const TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: Color(0xFF6C63FF)),
-                ),
-              ),
-              accountName: Text(
-                isAuth ? auth.user!.name : 'Tamu ASFI',
-                style: const TextStyle(fontWeight: FontWeight.w800),
-              ),
-              accountEmail: Text(
-                isAuth ? auth.user!.email : 'Belum login sebagai pembeli',
-              ),
-            ),
 
-            // Navigation Links
-            ListTile(
-              leading: const Icon(Icons.home, color: Colors.white70),
-              title: const Text('Beranda', style: TextStyle(color: Colors.white)),
-              onTap: () => Navigator.of(context).pop(),
-            ),
-            if (isAuth) ...[
-              ListTile(
-                leading: const Icon(Icons.shopping_bag, color: Colors.white70),
-                title: const Text('Pesanan Saya', style: TextStyle(color: Colors.white)),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const OrderHistoryScreen()),
-                  );
-                },
-              ),
-            ],
-            const Spacer(),
-            const Divider(color: Colors.white12),
-
-            // Login / Logout action
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: isAuth
-                  ? ElevatedButton(
-                      onPressed: () async {
-                        await auth.logout();
-                        if (context.mounted) Navigator.of(context).pop();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF6584).withOpacity(0.1),
-                        foregroundColor: const Color(0xFFFF6584),
-                        side: const BorderSide(color: Color(0xFFFF6584), width: 1.5),
-                        minimumSize: const Size.fromHeight(48),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: const Text('🚪 Keluar Akun', style: TextStyle(fontWeight: FontWeight.w800)),
-                    )
-                  : ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const LoginScreen()),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6C63FF),
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size.fromHeight(48),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                      ),
-                      child: const Text('🔑 Masuk / Daftar', style: TextStyle(fontWeight: FontWeight.w800)),
-                    ),
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
       appBar: AppBar(
         backgroundColor: const Color(0xFF13132B),
         elevation: 0,
@@ -212,6 +125,83 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
+          // Header / Wallet Card (Gopay style)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+            color: const Color(0xFF13132B),
+            child: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                gradient: const LinearGradient(colors: [Color(0xFF6C63FF), Color(0xFFFF6584)]),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.2),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(Icons.account_balance_wallet, color: Colors.white, size: 20),
+                          ),
+                          const SizedBox(width: 8),
+                          const Text(
+                            'ASFI Pay',
+                            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        isAuth ? 'Rp 1.500.000' : 'Rp -',
+                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _WalletAction(icon: Icons.arrow_upward, label: 'Bayar'),
+                      _WalletAction(icon: Icons.add_circle_outline, label: 'Top Up'),
+                      _WalletAction(icon: Icons.local_activity, label: 'Promo'),
+                      _WalletAction(icon: Icons.more_horiz, label: 'Lainnya'),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Main Menu Grid
+          Container(
+            color: const Color(0xFF13132B),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 4,
+              mainAxisSpacing: 16,
+              crossAxisSpacing: 12,
+              children: [
+                _MenuIcon(icon: Icons.fastfood, label: 'ASFI Food', color: Colors.orange),
+                _MenuIcon(icon: Icons.local_mall, label: 'ASFI Mall', color: Colors.blue),
+                _MenuIcon(icon: Icons.local_taxi, label: 'ASFI Ride', color: Colors.green),
+                _MenuIcon(icon: Icons.delivery_dining, label: 'ASFI Send', color: Colors.green),
+                _MenuIcon(icon: Icons.phone_android, label: 'Pulsa', color: Colors.lightBlue),
+                _MenuIcon(icon: Icons.movie, label: 'Hiburan', color: Colors.purple),
+                _MenuIcon(icon: Icons.receipt, label: 'Tagihan', color: Colors.redAccent),
+                _MenuIcon(icon: Icons.apps, label: 'Lainnya', color: Colors.grey),
+              ],
+            ),
+          ),
+          
+          const SizedBox(height: 8),
           // Search & Filter Box
           Container(
             padding: const EdgeInsets.all(16),
@@ -482,6 +472,68 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _WalletAction extends StatelessWidget {
+  final IconData icon;
+  final String label;
+
+  const _WalletAction({required this.icon, required this.label});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Icon(icon, color: Colors.white),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w500),
+        ),
+      ],
+    );
+  }
+}
+
+class _MenuIcon extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+
+  const _MenuIcon({required this.icon, required this.label, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 45,
+          height: 45,
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.2),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(icon, color: color, size: 24),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(fontSize: 11, color: Colors.white70),
+          textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+      ],
     );
   }
 }
