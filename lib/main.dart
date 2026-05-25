@@ -31,7 +31,6 @@ class AsfiApp extends StatelessWidget {
             primary: Color(0xFF6C63FF),
             secondary: Color(0xFFFF6584),
             surface: Color(0xFF13132B),
-            background: const Color(0xFF0D0D1A),
             error: Color(0xFFFF6584),
           ),
           appBarTheme: const AppBarTheme(
@@ -43,7 +42,7 @@ class AsfiApp extends StatelessWidget {
               fontSize: 16,
             ),
           ),
-          cardTheme: const CardTheme(
+          cardTheme: const CardThemeData(
             color: Color(0xFF13132B),
             elevation: 0,
             margin: EdgeInsets.zero,

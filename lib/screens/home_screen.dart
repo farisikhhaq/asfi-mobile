@@ -225,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: InputDecoration(
                     hintText: 'Cari produk atau toko...',
                     hintStyle: const TextStyle(color: Colors.white30, fontSize: 14),
-                    prefixIcon: const Icon(Icons.search, color: Colors.white55),
+                    prefixIcon: const Icon(Icons.search, color: Colors.white54),
                     filled: true,
                     fillColor: const Color(0xFF0D0D1A),
                     border: OutlineInputBorder(

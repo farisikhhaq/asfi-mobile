@@ -182,7 +182,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                           style: const TextStyle(
                             fontSize: 14,
                             color: Color(0xFF8888AA),
-                            decoration: textDecorationThrough,
+                            decoration: TextDecoration.lineThrough,
                             fontWeight: FontWeight.w600,
                           ),
                         ),

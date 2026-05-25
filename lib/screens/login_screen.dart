@@ -70,10 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         fontSize: 44,
                         fontWeight: FontWeight.w900,
                         letterSpacing: 2,
-                        foreground: Paint()
-                          ..shader = const LinearGradient(
-                            colors: [Color(0xFF6C63FF), Color(0xFFFF6584)],
-                          ).createShader(const Rect.fromLTWH(0, 0, 200, 70)),
+                        color: Color(0xFF6C63FF),
                       ),
                     ),
                   ),
